@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="lblUserFullName" layoutX="17.0" layoutY="60.0" prefHeight="18.0" prefWidth="175.0" text="WELCOME" />
+      <Label layoutX="46.0" layoutY="25.0" prefHeight="27.0" prefWidth="147.0" text="Library System">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TabPane layoutX="12.0" layoutY="104.0" prefHeight="350.0" prefWidth="606.0" style="-fx-background-color: #FBB344;" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Lending/Receiving">
+               <content>
+                  <AnchorPane prefHeight="6.0" prefWidth="624.0" style="-fx-background-color: #EBEAD3;">
+                     <children>
+                        <TextField fx:id="txtLendingItemCode" layoutX="6.0" layoutY="74.0" prefHeight="38.0" prefWidth="250.0" promptText="Item code" />
+                        <TextField fx:id="txtMemberID" layoutX="7.0" layoutY="125.0" prefHeight="38.0" prefWidth="250.0" promptText="Member identifier" />
+                        <TextField fx:id="txtReceivingItemCode" layoutX="340.0" layoutY="74.0" prefHeight="38.0" prefWidth="250.0" promptText="Item code" />
+                        <Button fx:id="buttonLendItem" layoutX="14.0" layoutY="259.0" mnemonicParsing="false" onAction="#onButtonLendItem" prefHeight="30.0" prefWidth="106.0" text="Lend item" />
+                        <Button fx:id="buttonReceiveItem" layoutX="340.0" layoutY="259.0" mnemonicParsing="false" onAction="#onButtonReceiveItem" prefHeight="30.0" prefWidth="106.0" text="Receive item" />
+                        <Label fx:id="lblLendMessage" layoutX="9.0" layoutY="214.0" prefHeight="18.0" prefWidth="245.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Label>
+                        <Label fx:id="lblReceiveMessageLate" layoutX="340.0" layoutY="207.0" prefHeight="34.0" prefWidth="207.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Label>
+                        <Label fx:id="lblReceiveMessage" layoutX="340.0" layoutY="167.0" prefHeight="20.0" prefWidth="215.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Collection">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="28.0" layoutY="25.0" prefHeight="18.0" prefWidth="155.0" text="Collection" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Members">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="35.0" layoutY="21.0" prefHeight="18.0" prefWidth="134.0" text="Members" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
