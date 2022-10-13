@@ -83,7 +83,7 @@ public class MainController implements Initializable {
                 txtReceivingItemCode.setText("");
                 break;
             }
-            lblLendMessage.setText("There is no item with this ID");
+            lblReceiveMessage.setText("There is no item with this ID");
         }
     }
 
