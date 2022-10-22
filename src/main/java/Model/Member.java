@@ -1,10 +1,11 @@
 package Model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Member {
+public class Member implements Serializable {
     int memberId;
     String memberName;
     String memberSurname;
@@ -15,6 +16,15 @@ public class Member {
 
     // List of items that lent by member
     List<Item> lentItemsByMember;
+
+    public Member(int memberId, String memberName, String memberSurname, LocalDate memberBirthDate) {
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.memberSurname = memberSurname;
+        this.memberBirthDate = memberBirthDate;
+        receivedItemsByMember = new ArrayList<>();
+        lentItemsByMember = new ArrayList<>();
+    }
 
     public List<Item> getReceivedItemsByMember() {
         return receivedItemsByMember;
@@ -30,15 +40,6 @@ public class Member {
 
     public void setLentItemsByMember(List<Item> lentItemsByMember) {
         this.lentItemsByMember = lentItemsByMember;
-    }
-
-    public Member(int memberId, String memberName, String memberSurname, LocalDate memberBirthDate) {
-        this.memberId = memberId;
-        this.memberName = memberName;
-        this.memberSurname = memberSurname;
-        this.memberBirthDate = memberBirthDate;
-        receivedItemsByMember = new ArrayList<>();
-        lentItemsByMember = new ArrayList<>();
     }
 
     public int getMemberId() {
@@ -65,7 +66,7 @@ public class Member {
         this.memberSurname = memberSurname;
     }
 
-    public LocalDate getMemberBirthDate() {
+    public LocalDate  getMemberBirthDate() {
         return memberBirthDate;
     }
 
