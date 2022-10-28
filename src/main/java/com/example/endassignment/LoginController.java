@@ -39,7 +39,7 @@ public class LoginController {
 
     @FXML
     public void onLoginButtonClick(ActionEvent actionEvent) throws IOException {
-        for (User user: libraryDB.users) {
+        for (User user: libraryDB.getUsers()) {
             if ((fieldUserName.getText().isEmpty() || fieldPassword.getText().isEmpty())) {
                 lblWrongUserNamePassword.setText("Please fill all the fields");
             }
@@ -47,7 +47,7 @@ public class LoginController {
                 MainController controller = new MainController(user,libraryDB);
                 loadScene(controller,"main-view.fxml");
             }
-            else if(!user.getUserName().equals(fieldUserName.getText()) && !user.getPassword().equals(fieldPassword.getText())){
+            else if(!user.getUserName().equals(fieldUserName.getText()) || !user.getPassword().equals(fieldPassword.getText())){
                 lblWrongUserNamePassword.setText("\u26A0"+"Invalid username/password combination");
             }
             }

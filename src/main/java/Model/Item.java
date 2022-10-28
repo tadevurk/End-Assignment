@@ -3,15 +3,16 @@ package Model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+
 public class Item implements Serializable {
-    public int itemCode;
-    public LocalDate lendDateOfItem;
+    private int itemCode;
+    private LocalDate lendDateOfItem;
 
-    public String author;
+    private String author;
 
-    public String title;
+    private String title;
 
-    public IsItemAvailable available;
+    private IsItemAvailable available;
 
     public IsItemAvailable getAvailable() {
         return available;

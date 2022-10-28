@@ -29,6 +29,6 @@ public class LoginApplication extends Application {
 
     @Override
     public void stop(){
-        libraryDB.WriteDataToFile();
+        libraryDB.WriteDataToFiles();
     }
 }

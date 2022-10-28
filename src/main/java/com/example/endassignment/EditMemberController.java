@@ -1,6 +1,5 @@
 package com.example.endassignment;
 
-import Data.LibraryDB;
 import Model.Member;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,12 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.Stack;
 
 public class EditMemberController implements Initializable {
 
@@ -39,7 +33,6 @@ public class EditMemberController implements Initializable {
     @FXML
     private TextField txtFieldLastName;
 
-    // TODO: pass the member as parameter
     public EditMemberController(Member member, MainController mainController) {
         this.member = member;
         this.mainController = mainController;

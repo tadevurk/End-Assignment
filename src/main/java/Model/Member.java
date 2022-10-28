@@ -6,41 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Member implements Serializable {
-    int memberId;
-    String memberName;
-    String memberSurname;
-    LocalDate memberBirthDate;
-
-    // List of the item that received by member
-    List<Item> receivedItemsByMember;
-
-    // List of items that lent by member
-    List<Item> lentItemsByMember;
+    private int memberId;
+    private String memberName;
+    private String memberSurname;
+    private LocalDate memberBirthDate;
 
     public Member(int memberId, String memberName, String memberSurname, LocalDate memberBirthDate) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.memberSurname = memberSurname;
         this.memberBirthDate = memberBirthDate;
-        receivedItemsByMember = new ArrayList<>();
-        lentItemsByMember = new ArrayList<>();
     }
 
-    public List<Item> getReceivedItemsByMember() {
-        return receivedItemsByMember;
-    }
-
-    public void setReceivedItemsByMember(List<Item> receivedItemsByMember) {
-        this.receivedItemsByMember = receivedItemsByMember;
-    }
-
-    public List<Item> getLentItemsByMember() {
-        return lentItemsByMember;
-    }
-
-    public void setLentItemsByMember(List<Item> lentItemsByMember) {
-        this.lentItemsByMember = lentItemsByMember;
-    }
 
     public int getMemberId() {
         return memberId;

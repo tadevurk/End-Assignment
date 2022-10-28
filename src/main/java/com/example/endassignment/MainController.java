@@ -54,7 +54,7 @@ public class MainController implements Initializable {
     private TableColumn<Member, Integer> memberId;
 
     @FXML
-    private TableColumn<Member, String> memberBirthDate;
+    private TableColumn<Member, LocalDate> memberBirthDate;
 
     @FXML
     private TableColumn<Member, String> memberName;
@@ -75,11 +75,8 @@ public class MainController implements Initializable {
     private TextField txtFieldSearchMember;
     // -----------------------------------------------------------------------
 
-
-
     @FXML
     private Button btnAddItem;
-
 
     @FXML
     private Label lblUserFullName;
@@ -111,8 +108,6 @@ public class MainController implements Initializable {
     @FXML
     private TextField txtFieldSearch;
 
-    Member currentMember;
-
     User loggedUser;
 
     LibraryDB libraryDB;
@@ -140,20 +135,28 @@ public class MainController implements Initializable {
     void onButtonReceiveItem(ActionEvent event) {
         int itemCode = Integer.parseInt(txtReceivingItemCode.getText());
 
-
-        for (Item item : libraryDB.items) {
+        for (Item item : libraryDB.getItems()) {
             if (item.getItemCode() == itemCode) {
-                if (item.available == IsItemAvailable.No) {
+                if (txtMemberID.getText().isEmpty()) {
+                    lblReceiveMessage.setText("Please enter the member ID");
+                    return;
+                }
+                if (item.getAvailable() == IsItemAvailable.No) {
+                    Member member = checkMemberExistsInTheDataBase(Integer.parseInt(txtMemberID.getText()));
+                    if (member == null) {
+                        lblLendMessage.setText("There is no member with this ID");
+                        return;
+                    }
                     item.setAvailable(IsItemAvailable.Yes);
-                    currentMember.getLentItemsByMember().remove(item);
-                    currentMember.getReceivedItemsByMember().add(item);
                     lblReceiveMessage.setText("\u2705" + " Item is successfully received!");
+                    lblLendMessage.setText(""); // Clean lend message
                     long weeks = ChronoUnit.WEEKS.between(item.getLendDateOfItem(), LocalDate.now());
                     if (weeks > 3) {
-                        long daysBetween = ChronoUnit.DAYS.between(item.lendDateOfItem, LocalDate.now());
+                        long daysBetween = ChronoUnit.DAYS.between(item.getLendDateOfItem(), LocalDate.now());
                         lblReceiveMessageLate.setText("Don't be too late for next time, please" + "\n" + "\u26A0" + " The item is " + daysBetween + " day(s) late");
                     }
                     item.setLendDateOfItem(null);
+
                 } else {
                     lblReceiveMessage.setText("You did not lend this item");
                 }
@@ -167,140 +170,140 @@ public class MainController implements Initializable {
 
     @FXML
     void onButtonLendItem(ActionEvent event) {
-        int itemCode = Integer.parseInt(txtLendingItemCode.getText());
+        try {
+            int itemCode = Integer.parseInt(txtLendingItemCode.getText());
+            Member member = checkMemberExistsInTheDataBase(Integer.parseInt(txtMemberID.getText()));
+            Item item = checkItemExistsInTheDataBase(itemCode);
+            if (member == null) {
+                lblLendMessage.setText("There is no member with this ID");
+                return;
+            }
+            if (item == null) {
+                lblLendMessage.setText("There is no item with this ID");
+                return;
+            }
+            if (item.getAvailable() == IsItemAvailable.No) {
+                lblLendMessage.setText("Item is already lent!");
+            } else {
+                lblLendMessage.setText("\u2705 Item is successfully lent!");
+                lblReceiveMessage.setText(""); // Clean receive message
+                item.setAvailable(IsItemAvailable.No); // change the status of the item as lent
+                item.setLendDateOfItem(LocalDate.now());
+            }
+            txtLendingItemCode.setText("");
+            txtMemberID.setText("");
+            setItemsToItemTableView();
+        } catch (NumberFormatException formatException) {
+            lblLendMessage.setText("Enter correct format!");
+        }
 
-        int memberId = Integer.parseInt(txtMemberID.getText());
-        currentMember = null;
-
-        currentMember = checkMemberExist(memberId, currentMember);
-        checkItem(itemCode, currentMember);
-        setItemsToItemTableView();
     }
 
 
     // Check if the member exists in the DB
-    private Member checkMemberExist(int memberId, Member currentMember) {
-        for (Member member : libraryDB.members) {
+    private Member checkMemberExistsInTheDataBase(int memberId) {
+        for (Member member : libraryDB.getMembers()) {
             if (member.getMemberId() == memberId) {
-                currentMember = member; // Assign the member as current member
-            } else {
-                lblLendMessage.setText("There is no membership with this ID");
+                return member;
             }
         }
-        return currentMember;
+        return null;
     }
 
-
-    // Check if the item exists in the DB
-    private void checkItem(int itemCode, Member currentMember) {
-        if (currentMember != null) {
-            for (Item item : libraryDB.getItemsList()) {
-                if (item.getItemCode() == itemCode) {
-                    //TODO: booelan should be switched to enum! DON'T FORGET THAT!!
-                    if (item.available == IsItemAvailable.Yes) {
-                        lblLendMessage.setText("\u2705 Item is successfully lent!");
-                        item.setAvailable(IsItemAvailable.No); // change the status of the item as lent
-                        currentMember.getLentItemsByMember().add(item);
-                        item.setLendDateOfItem(LocalDate.now());
-                        txtLendingItemCode.setText("");
-                        txtMemberID.setText("");
-                    } else {
-                        lblLendMessage.setText("Item is already lent!");
-                    }
-                    break;
-                } else {
-                    lblLendMessage.setText("There is no item with this ID");
-                }
+    private Item checkItemExistsInTheDataBase(int itemID) {
+        for (Item item : libraryDB.getItems()) {
+            if (item.getItemCode() == itemID) {
+                return item;
             }
         }
+        return null;
     }
 
-    public void setItemsToItemTableView(){
+    public void setItemsToItemTableView() {
         tableViewItems.getItems().clear();
-        items = FXCollections.observableArrayList(libraryDB.items);
+        items = FXCollections.observableArrayList(libraryDB.getItems());
 
-        itemCode.setCellValueFactory(new PropertyValueFactory<Item,Integer>("itemCode"));
-        available.setCellValueFactory(new PropertyValueFactory<Item,IsItemAvailable>("available"));
-        title.setCellValueFactory(new PropertyValueFactory<Item,String>("title"));
-        author.setCellValueFactory(new PropertyValueFactory<Item,String>("author"));
+        itemCode.setCellValueFactory(new PropertyValueFactory<Item, Integer>("itemCode"));
+        available.setCellValueFactory(new PropertyValueFactory<Item, IsItemAvailable>("available"));
+        title.setCellValueFactory(new PropertyValueFactory<Item, String>("title"));
+        author.setCellValueFactory(new PropertyValueFactory<Item, String>("author"));
 
         tableViewItems.setItems(items);
     }
 
-    public void setMembersToTableView(){
+    public void setMembersToTableView() {
         tableViewMembers.getItems().clear();
-        members = FXCollections.observableArrayList(libraryDB.members);
+        members = FXCollections.observableArrayList(libraryDB.getMembers());
 
-        memberId.setCellValueFactory(new PropertyValueFactory<Member,Integer>("memberId"));
-        memberName.setCellValueFactory(new PropertyValueFactory<Member,String>("memberName"));
-        memberSurname.setCellValueFactory(new PropertyValueFactory<Member,String>("memberSurname"));
-        memberBirthDate.setCellValueFactory(new PropertyValueFactory<Member,String>("memberBirthDate"));
+        memberId.setCellValueFactory(new PropertyValueFactory<Member, Integer>("memberId"));
+        memberName.setCellValueFactory(new PropertyValueFactory<Member, String>("memberName"));
+        memberSurname.setCellValueFactory(new PropertyValueFactory<Member, String>("memberSurname"));
+        memberBirthDate.setCellValueFactory(new PropertyValueFactory<Member, LocalDate>("memberBirthDate"));
 
         tableViewMembers.setItems(members);
     }
 
     @FXML
     void onButtonAddItem(ActionEvent event) {
-        AddItemController addItemController = new AddItemController(libraryDB,this);
-        loadScene(addItemController,"add-item-view.fxml",btnAddItem,"Add Item");
+        AddItemController addItemController = new AddItemController(libraryDB, this);
+        loadScene(addItemController, "add-item-view.fxml", btnAddItem, "Add Item");
     }
 
     @FXML
     void onButtonDeleteItem(ActionEvent event) {
-        libraryDB.items.remove(tableViewItems.getSelectionModel().getSelectedItem());
+        libraryDB.getItems().remove(tableViewItems.getSelectionModel().getSelectedItem());
         setItemsToItemTableView();
     }
 
     @FXML
     void onButtonEditItem(ActionEvent event) {
-        EditItemController editItemController = new EditItemController(tableViewItems.getSelectionModel().getSelectedItem(),this);
-        loadScene(editItemController,"edit-item-view.fxml",btnEditItem,"Edit Item");
+        EditItemController editItemController = new EditItemController(tableViewItems.getSelectionModel().getSelectedItem(), this);
+        loadScene(editItemController, "edit-item-view.fxml", btnEditItem, "Edit Item");
     }
 
     @FXML
     void onButtonAddMember(ActionEvent event) {
-        AddMemberController addMemberController = new AddMemberController(libraryDB,this);
-        loadScene(addMemberController,"add-member-view.fxml",btnAddMember,"Add Member");
+        AddMemberController addMemberController = new AddMemberController(libraryDB, this);
+        loadScene(addMemberController, "add-member-view.fxml", btnAddMember, "Add Member");
     }
 
     @FXML
     void onButtonEditMember(ActionEvent event) {
-        EditMemberController editMemberController = new EditMemberController(tableViewMembers.getSelectionModel().getSelectedItem(),this);
-        loadScene(editMemberController,"edit-member-view.fxml",btnEditItem,"Edit Member");
+        EditMemberController editMemberController = new EditMemberController(tableViewMembers.getSelectionModel().getSelectedItem(), this);
+        loadScene(editMemberController, "edit-member-view.fxml", btnEditItem, "Edit Member");
     }
 
     @FXML
     void onButtonDeleteMember(ActionEvent event) {
-        libraryDB.members.remove(tableViewMembers.getSelectionModel().getSelectedItem());
+        libraryDB.getMembers().remove(tableViewMembers.getSelectionModel().getSelectedItem());
         setMembersToTableView();
     }
 
 
-    private void searchItem(){
+    private void searchItem() {
 
         // Wrap the Observable list in a filteredList (initially display all)
-        FilteredList<Item> filteredData = new FilteredList<>(items,b->true);
+        FilteredList<Item> filteredData = new FilteredList<>(items, b -> true);
 
         txtFieldSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-                filteredData.setPredicate(item -> {
-                    if (newValue == null || newValue.isEmpty()){
-                        return true;
-                    }
+            filteredData.setPredicate(item -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
 
-                    // Compare item code, title and author of every item filter tex
-                    String lowerCaseFilter = newValue.toLowerCase();
+                // Compare item code, title and author of every item filter tex
+                String lowerCaseFilter = newValue.toLowerCase();
 
-                    if (String.valueOf(item.getItemCode()).toLowerCase().indexOf(lowerCaseFilter) != -1){
-                        return true;
-                    }else if (item.getTitle().toLowerCase().indexOf(lowerCaseFilter) != -1){
-                        return true;
-                    } else if (item.getAuthor().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    }
-                    else {
-                        return false; // Doesn't match
-                    }
-                });
+                if (String.valueOf(item.getItemCode()).toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true;
+                } else if (item.getTitle().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true;
+                } else if (item.getAuthor().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true;
+                } else {
+                    return false; // Doesn't match
+                }
+            });
         });
 
         // Wrap the Filtered list in a sorted list
@@ -314,9 +317,9 @@ public class MainController implements Initializable {
         tableViewItems.setItems(sortedData);
     }
 
-    private void loadScene(Object controller, String fxmlFileName, Button button, String title){
+    private void loadScene(Object controller, String fxmlFileName, Button button, String title) {
         // TODO: duplication of code over here
-        try{
+        try {
             FXMLLoader fxmlLoader = new FXMLLoader(LoginApplication.class.getResource(fxmlFileName));
             fxmlLoader.setController(controller);
             Scene scene = new Scene(fxmlLoader.load());
@@ -325,8 +328,7 @@ public class MainController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL); // Block other windows to do anything
             stage.setScene(scene);
             stage.show();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

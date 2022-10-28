@@ -44,13 +44,13 @@ public class AddItemController{
 
     private void addItem(){
         int newItemCode;
-        if (libraryDB.items.size() == 0){
+        if (libraryDB.getItems().isEmpty()){
             newItemCode = 1;
         }
         else {
-            newItemCode = (libraryDB.items.get(libraryDB.items.size() -1).itemCode + 1); // The last item's code + 1 is a new item code
+            newItemCode = (libraryDB.getItems().get(libraryDB.getItems().size() -1).getItemCode() + 1); // The last item's code + 1 is a new item code
         }
-        libraryDB.items.add(new Item(newItemCode,null, IsItemAvailable.Yes,txtFieldAuthor.getText(),txtFieldTitle.getText()));
+        libraryDB.getItems().add(new Item(newItemCode,null, IsItemAvailable.Yes,txtFieldAuthor.getText(),txtFieldTitle.getText()));
         mainController.setItemsToItemTableView();
 
         txtFieldAuthor.setText("");
