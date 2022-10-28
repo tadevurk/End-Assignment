@@ -3,8 +3,8 @@
 End Assignment of Java Fundamentals
 
 LibraryDB
-Username: vedatturk password: 12345
-Username: Riccardo password: 12345
+Username: vedat password: 12345
+Username: wim password: 12345
 
 
 Item, Member, User

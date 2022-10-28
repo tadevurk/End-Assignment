@@ -10,10 +10,10 @@ import java.io.IOException;
 
 public class LoginApplication extends Application {
 
-    LibraryDB libraryDB = new LibraryDB();
+    private LibraryDB libraryDB = new LibraryDB();
 
     public static void main(String[] args) {
-        launch(args);
+        launch();
     }
 
     @Override
@@ -29,6 +29,6 @@ public class LoginApplication extends Application {
 
     @Override
     public void stop(){
-        libraryDB.WriteDataToFiles();
+        libraryDB.writeDataToFiles();
     }
 }

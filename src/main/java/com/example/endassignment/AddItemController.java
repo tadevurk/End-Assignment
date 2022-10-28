@@ -11,9 +11,9 @@ import javafx.stage.Stage;
 
 public class AddItemController{
 
-    LibraryDB libraryDB;
+    private LibraryDB libraryDB;
 
-    MainController mainController;
+    private MainController mainController;
 
     @FXML
     private Button btnAddCancelItem;

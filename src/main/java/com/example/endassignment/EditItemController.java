@@ -13,9 +13,9 @@ import java.util.ResourceBundle;
 
 public class EditItemController implements Initializable {
 
-    Item item;
+    private Item item;
 
-    MainController mainController;
+    private MainController mainController;
 
     @FXML
     private Button btnEditCancelItem;

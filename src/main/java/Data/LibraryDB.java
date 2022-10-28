@@ -48,7 +48,7 @@ public class LibraryDB {
         readFromFile("Files/Members.dat",members);
         readFromFile("Files/Items.dat",items);
     }
-    public void WriteDataToFiles(){
+    public void writeDataToFiles(){
         writeDataToFile("Files/Users.dat",users);
         writeDataToFile("Files/Members.dat",members);
         writeDataToFile("Files/Items.dat",items);

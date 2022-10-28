@@ -14,9 +14,9 @@ import java.util.ResourceBundle;
 
 public class EditMemberController implements Initializable {
 
-    Member member;
+    private Member member;
 
-    MainController mainController;
+    private MainController mainController;
 
     @FXML
     private Button btnCancelEditMember;

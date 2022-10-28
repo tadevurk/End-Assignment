@@ -13,9 +13,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class AddMemberController {
-    LibraryDB libraryDB;
+    private LibraryDB libraryDB;
 
-    MainController mainController;
+    private MainController mainController;
 
     @FXML
     private Button btnAddMember;

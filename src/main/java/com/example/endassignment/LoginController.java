@@ -18,7 +18,7 @@ import java.io.IOException;
 public class LoginController {
 
     @FXML
-    private Button buttonLogin;
+    Button buttonLogin;
     @FXML
     private PasswordField fieldPassword;
     @FXML
@@ -30,6 +30,7 @@ public class LoginController {
     @FXML
     private GridPane gridPanel;
 
+    //TODO: redundant new library thing
     LibraryDB libraryDB = new LibraryDB();
 
     public LoginController(LibraryDB libraryDB) {
@@ -39,30 +40,26 @@ public class LoginController {
 
     @FXML
     public void onLoginButtonClick(ActionEvent actionEvent) throws IOException {
-        for (User user: libraryDB.getUsers()) {
+        for (User user : libraryDB.getUsers()) {
             if ((fieldUserName.getText().isEmpty() || fieldPassword.getText().isEmpty())) {
                 lblWrongUserNamePassword.setText("Please fill all the fields");
-            }
-            else if(user.getUserName().equals(fieldUserName.getText()) && user.getPassword().equals(fieldPassword.getText())){
-                MainController controller = new MainController(user,libraryDB);
-                loadScene(controller,"main-view.fxml");
-            }
-            else if(!user.getUserName().equals(fieldUserName.getText()) || !user.getPassword().equals(fieldPassword.getText())){
-                lblWrongUserNamePassword.setText("\u26A0"+"Invalid username/password combination");
-            }
+            } else if (user.getUserName().equals(fieldUserName.getText()) && user.getPassword().equals(fieldPassword.getText())) {
+                loadScene("main-view.fxml", new MainController(user, libraryDB));
+            } else if (!user.getUserName().equals(fieldUserName.getText()) || !user.getPassword().equals(fieldPassword.getText())) {
+                lblWrongUserNamePassword.setText("\u26A0" + "Invalid username/password combination");
             }
         }
+    }
 
-    private void loadScene(Object controller, String fxmlFileName){
-        try{
-            FXMLLoader fxmlLoader = new FXMLLoader(LoginApplication.class.getResource(fxmlFileName));
+    private void loadScene(String name, Object controller) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(LoginApplication.class.getResource(name));
             fxmlLoader.setController(controller);
             Scene scene = new Scene(fxmlLoader.load());
-            Stage loginStage = (Stage) buttonLogin.getScene().getWindow();
-            loginStage.setTitle("Main View");
-            loginStage.setScene(scene);
-        }
-        catch (IOException e){
+            Stage window = (Stage) buttonLogin.getScene().getWindow();
+            window.setTitle("Main View");
+            window.setScene(scene);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

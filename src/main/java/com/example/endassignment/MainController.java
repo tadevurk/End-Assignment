@@ -126,9 +126,6 @@ public class MainController implements Initializable {
         lblUserFullName.setText("WELCOME " + loggedUser.toString());
         setItemsToItemTableView();
         setMembersToTableView();
-
-        // TODO: Ask teacher about that, why it doesn't work when I run it...
-        //searchItem();
     }
 
     @FXML
@@ -246,7 +243,7 @@ public class MainController implements Initializable {
     @FXML
     void onButtonAddItem(ActionEvent event) {
         AddItemController addItemController = new AddItemController(libraryDB, this);
-        loadScene(addItemController, "add-item-view.fxml", btnAddItem, "Add Item");
+        loadScene(addItemController, "add-item-view.fxml", "Add Item");
     }
 
     @FXML
@@ -258,19 +255,19 @@ public class MainController implements Initializable {
     @FXML
     void onButtonEditItem(ActionEvent event) {
         EditItemController editItemController = new EditItemController(tableViewItems.getSelectionModel().getSelectedItem(), this);
-        loadScene(editItemController, "edit-item-view.fxml", btnEditItem, "Edit Item");
+        loadScene(editItemController, "edit-item-view.fxml", "Edit Item");
     }
 
     @FXML
     void onButtonAddMember(ActionEvent event) {
         AddMemberController addMemberController = new AddMemberController(libraryDB, this);
-        loadScene(addMemberController, "add-member-view.fxml", btnAddMember, "Add Member");
+        loadScene(addMemberController, "add-member-view.fxml", "Add Member");
     }
 
     @FXML
     void onButtonEditMember(ActionEvent event) {
         EditMemberController editMemberController = new EditMemberController(tableViewMembers.getSelectionModel().getSelectedItem(), this);
-        loadScene(editMemberController, "edit-member-view.fxml", btnEditItem, "Edit Member");
+        loadScene(editMemberController, "edit-member-view.fxml", "Edit Member");
     }
 
     @FXML
@@ -279,45 +276,11 @@ public class MainController implements Initializable {
         setMembersToTableView();
     }
 
+    //TODO: text field clear! not ("").
 
-    private void searchItem() {
 
-        // Wrap the Observable list in a filteredList (initially display all)
-        FilteredList<Item> filteredData = new FilteredList<>(items, b -> true);
 
-        txtFieldSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(item -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                // Compare item code, title and author of every item filter tex
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                if (String.valueOf(item.getItemCode()).toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true;
-                } else if (item.getTitle().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true;
-                } else if (item.getAuthor().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true;
-                } else {
-                    return false; // Doesn't match
-                }
-            });
-        });
-
-        // Wrap the Filtered list in a sorted list
-        SortedList<Item> sortedData = new SortedList<>(filteredData);
-
-        // Bind the sortedList comparator to the table view comparator
-        //      Otherwise, sorting the TableView would have no effect
-        sortedData.comparatorProperty().bind(tableViewItems.comparatorProperty());
-
-        // Add sorted (and filtered) data to the table
-        tableViewItems.setItems(sortedData);
-    }
-
-    private void loadScene(Object controller, String fxmlFileName, Button button, String title) {
+    private void loadScene(Object controller, String fxmlFileName, String title) {
         // TODO: duplication of code over here
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(LoginApplication.class.getResource(fxmlFileName));
