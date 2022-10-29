@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="350.0" prefWidth="606.0" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField fx:id="txtFieldFirstName" layoutX="14.0" layoutY="67.0" prefHeight="26.0" prefWidth="274.0" promptText="First Name" />
+      <TextField fx:id="txtFieldLastName" layoutX="14.0" layoutY="163.0" prefHeight="26.0" prefWidth="274.0" promptText="Last Name" />
+      <DatePicker fx:id="datePickerMemberBD" layoutX="369.0" layoutY="67.0" prefHeight="26.0" prefWidth="214.0" promptText="dd-mm-yyyy" />
+      <Button fx:id="btnAddMember" layoutX="14.0" layoutY="262.0" mnemonicParsing="false" onAction="#onButtonAddMember" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: #42ED6C;" text="Add Member" textFill="WHITE" />
+      <Button fx:id="btnCancelAddMember" layoutX="197.0" layoutY="262.0" mnemonicParsing="false" onAction="#onButtonCancelAddMember" prefHeight="35.0" prefWidth="90.0" style="-fx-background-color: #F0130D;" text="Cancel" textFill="WHITE" />
+      <Label fx:id="lblAddMember" layoutX="14.0" layoutY="220.0" prefHeight="18.0" prefWidth="174.0" />
+   </children>
+</AnchorPane>

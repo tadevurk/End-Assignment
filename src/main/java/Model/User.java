@@ -1,6 +1,8 @@
 package Model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private Integer id;
     private String name;
     private String lastName;
@@ -23,7 +25,7 @@ public class User {
                 ;
     }
 
-    public void getId(){
+    public void getId(int id){
         this.id = id;
     }
     public String getName(){

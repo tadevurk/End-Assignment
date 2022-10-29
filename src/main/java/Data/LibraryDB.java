@@ -4,50 +4,78 @@ import Model.Item;
 import Model.Member;
 import Model.User;
 
-import java.time.LocalDate;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryDB {
 
-    public List<User> users;
+    private List<User> users = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
-    public List<Item> items;
+    private List<Member> members = new ArrayList<>();
 
-    public List<Member> members;
-
-    public LibraryDB() {
-        users = new ArrayList<>();
-        items = new ArrayList<>();
-        members = new ArrayList<>();
-
-        users.addAll(
-                List.of(
-                        new User(1, "Vedat", "Türk", "vedatturk", "12345"),
-                        new User(2, "Riccardo", "Biggi", "riccobiggi", "12345")
-                )
-        );
-
-        items.addAll(
-                List.of(
-                        new Item(1, null,false),
-                        new Item(2,null,false)
-                )
-        );
-
-        members.addAll(
-                List.of(
-                        new Member(1,"Vedat","Turk",LocalDate.of(1993,11,9)),
-                        new Member(2,"Riccardo","Biggi",LocalDate.of(1996,9,12))
-                )
-        );
-    }
-
-    public List<User> getUsersList() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public List<Item> getItemsList() {
+    public List<Item> getItems() {
         return items;
+    }
+
+    public List<Member> getMembers() {
+        return members;
+    }
+
+
+    public LibraryDB() {
+        readDataFromFiles();
+    }
+
+    public void readDataFromFiles(){
+        readFromFile("Files/Users.dat", users);
+        readFromFile("Files/Members.dat",members);
+        readFromFile("Files/Items.dat",items);
+    }
+    public void writeDataToFiles(){
+        writeDataToFile("Files/Users.dat",users);
+        writeDataToFile("Files/Members.dat",members);
+        writeDataToFile("Files/Items.dat",items);
+    }
+
+    // // Given the generic type of list collection
+    private  <T> void readFromFile(String pathName, List<T> objectList){
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(pathName)))){
+            while (true){
+                try {
+                    T element = (T) ois.readObject();
+                    objectList.add(element);
+                } catch (EOFException e) {
+                    break;
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Given the generic type of list collection
+    private <T> void writeDataToFile(String pathName, List<T> objectList){
+        try (FileOutputStream fos = new FileOutputStream(new File(pathName));
+             ObjectOutputStream oos = new ObjectOutputStream(fos);) {
+
+            for (T element : objectList) {
+                oos.writeObject(element);
+                oos.flush();
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
