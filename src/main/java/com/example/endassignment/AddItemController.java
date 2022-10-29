@@ -64,5 +64,9 @@ public class AddItemController{
 
         txtFieldAuthor.setText("");
         txtFieldTitle.setText("");
+
+        Stage cancel = (Stage) btnAddCancelItem.getScene().getWindow();
+        cancel.close();
+
     }
 }

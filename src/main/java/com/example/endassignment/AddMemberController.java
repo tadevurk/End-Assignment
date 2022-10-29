@@ -63,6 +63,9 @@ public class AddMemberController {
             txtFieldLastName.setText("");
             datePickerMemberBD.getEditor().clear();
             datePickerMemberBD.setValue(null);
+
+            Stage close = (Stage) btnAddMember.getScene().getWindow();
+            close.close();
         }catch (DateTimeParseException dtParseException){
                 lblAddMember.setText("Please enter valid date format");
         }
