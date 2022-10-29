@@ -6,6 +6,7 @@ import Model.Item;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -23,6 +24,9 @@ public class AddItemController{
 
     @FXML
     private TextField txtFieldTitle;
+
+    @FXML
+    private Label lblAddItem;
 
 
     public AddItemController(LibraryDB libraryDB, MainController mainController) {
@@ -43,7 +47,12 @@ public class AddItemController{
 
 
     private void addItem(){
+        if (txtFieldTitle.getText().isEmpty() || txtFieldAuthor.getText().isEmpty()){
+            lblAddItem.setText("Please fill all fields");
+            return;
+        }
         int newItemCode;
+        // If item list is empty, initialize as 1;
         if (libraryDB.getItems().isEmpty()){
             newItemCode = 1;
         }

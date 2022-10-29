@@ -19,25 +19,14 @@ public class LibraryDB {
         return users;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
     public List<Item> getItems() {
         return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
     }
 
     public List<Member> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Member> members) {
-        this.members = members;
-    }
 
     public LibraryDB() {
         readDataFromFiles();
@@ -54,6 +43,7 @@ public class LibraryDB {
         writeDataToFile("Files/Items.dat",items);
     }
 
+    // // Given the generic type of list collection
     private  <T> void readFromFile(String pathName, List<T> objectList){
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(pathName)))){
             while (true){
@@ -61,7 +51,6 @@ public class LibraryDB {
                     T element = (T) ois.readObject();
                     objectList.add(element);
                 } catch (EOFException e) {
-                    //throw new RuntimeException(e);
                     break;
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
@@ -74,13 +63,14 @@ public class LibraryDB {
         }
     }
 
+    // Given the generic type of list collection
     private <T> void writeDataToFile(String pathName, List<T> objectList){
         try (FileOutputStream fos = new FileOutputStream(new File(pathName));
              ObjectOutputStream oos = new ObjectOutputStream(fos);) {
 
             for (T element : objectList) {
                 oos.writeObject(element);
-                //oos.flush();
+                oos.flush();
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

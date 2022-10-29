@@ -38,10 +38,6 @@ public class Item implements Serializable {
         return title;
     }
 
-    // if false, the item can be lent
-    // if true, the item can NOT be lent
-    public boolean itemStatus;
-
     public Item(int itemCode, LocalDate lendDateOfItem, IsItemAvailable available, String author, String title) {
         this.itemCode = itemCode;
         this.lendDateOfItem = lendDateOfItem;
@@ -64,13 +60,5 @@ public class Item implements Serializable {
 
     public void setLendDateOfItem(LocalDate lendDateOfItem) {
         this.lendDateOfItem = lendDateOfItem;
-    }
-
-    public boolean isItemStatus() {
-        return itemStatus;
-    }
-
-    public void setItemStatus(boolean itemStatus) {
-        this.itemStatus = itemStatus;
     }
 }

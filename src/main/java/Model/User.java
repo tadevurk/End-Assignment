@@ -25,7 +25,7 @@ public class User implements Serializable {
                 ;
     }
 
-    public void getId(){
+    public void getId(int id){
         this.id = id;
     }
     public String getName(){

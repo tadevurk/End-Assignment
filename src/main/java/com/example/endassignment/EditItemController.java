@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -26,9 +27,12 @@ public class EditItemController implements Initializable {
     @FXML
     private TextField txtFieldTitle;
 
+    @FXML
+    private Label lblEditItem;
+
     public EditItemController(Item item, MainController mainController) {
-            this.item = item;
-            this.mainController = mainController;
+        this.item = item;
+        this.mainController = mainController;
     }
 
     @Override
@@ -39,6 +43,11 @@ public class EditItemController implements Initializable {
 
     @FXML
     void onButtonEditItem(ActionEvent event) {
+
+        if (txtFieldTitle.getText().isEmpty() || txtFieldAuthor.getText().isEmpty()) {
+            lblEditItem.setText("Please fill all fields");
+            return;
+        }
         item.setTitle(txtFieldTitle.getText());
         item.setAuthor(txtFieldAuthor.getText());
 

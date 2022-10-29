@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,11 +26,7 @@ public class LoginController {
     @FXML
     private Label lblWrongUserNamePassword;
 
-    @FXML
-    private GridPane gridPanel;
-
-    //TODO: redundant new library thing
-    LibraryDB libraryDB = new LibraryDB();
+    LibraryDB libraryDB;
 
     public LoginController(LibraryDB libraryDB) {
         this.libraryDB = libraryDB;

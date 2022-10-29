@@ -2,8 +2,6 @@ package Model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Member implements Serializable {
     private int memberId;
@@ -17,7 +15,6 @@ public class Member implements Serializable {
         this.memberSurname = memberSurname;
         this.memberBirthDate = memberBirthDate;
     }
-
 
     public int getMemberId() {
         return memberId;
